@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="OFF">
+	<properties>
+	   <property name="filenameLog">${sys:catalina.base}/logs/ct_SYS_$${date:yyyy-MM-dd}.log</property>
+	   <property name="SQLLogfilename">${sys:catalina.base}/logs/ct_SQL_$${date:yyyy-MM-dd}.log</property>
+	</properties>
+
+	<Appenders>
+		<RollingFile name="RollingFile" fileName="${filenameLog}"
+			filePattern="${sys:catalina.base}/logs/history/sys/$${date:yyyy-MM}/ct-%d{yyyy-MM-dd}-%i.log.gz">
+			<PatternLayout>
+				<Pattern>%d{HH:mm:ss.SSS} %-5level %class{36} %d %p %c [%t] %m%n</Pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="250 MB" />
+			</Policies>
+		</RollingFile>
+		<RollingFile name="SQLlogRollingFile" fileName="${SQLLogfilename}"
+			filePattern="${sys:catalina.base}/logs/history/sql/$${date:yyyy-MM}/ct-%d{yyyy-MM-dd}-%i.log.gz">
+			<PatternLayout>
+				<Pattern>%d{HH:mm:ss.SSS} %-5level %class{36} %d %p %c [%t] %m%n</Pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="250 MB" />
+			</Policies>
+		</RollingFile>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout>
+				<Pattern>%d{HH:mm:ss.SSS} %-5level %class{36} %d %p %c [%t] %m%n</Pattern>
+			</PatternLayout>
+		</Console>
+	</Appenders>
+	<Loggers>
+		<Logger name="com.custtalk.web.mapper" level="DEBUG">
+			<AppenderRef ref="SQLlogRollingFile" />
+		</Logger >
+		<Root level="error">
+			<AppenderRef ref="RollingFile" />
+			<AppenderRef ref="Console" />
+		</Root>
+	</Loggers>
+</Configuration>
